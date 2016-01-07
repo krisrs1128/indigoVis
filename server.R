@@ -1,7 +1,11 @@
 shinyServer(function(input, output) {
   # upload-data
   data_fun <- reactive({
-    cur_data <- read.csv(input$data$datapath)
+    cur_path <- input$data$datapath
+    if(is.null(cur_path)) {
+      cur_path <- "core/p2p_num_scaled.csv"
+    }
+    cur_data <- read.csv(cur_path)
     rownames(cur_data) <- cur_data[, 1]
     as.matrix(cur_data[, -1])
   })
@@ -9,6 +13,10 @@ shinyServer(function(input, output) {
   # upload-metadata
   row_groups_fun <- reactive({
     cur_path <- input$row_groups$datapath
+    cur_data_path <- input$data$datapath
+    if(is.null(cur_data_path) & is.null(cur_path)) {
+      cur_path <- "core/p2p_gender.csv"
+    }
     if(!is.null(cur_path)) {
       return(as.factor(read.csv(cur_path, header = F)[, 1]))
     }
@@ -23,7 +31,7 @@ shinyServer(function(input, output) {
   output$cur_response <- renderUI({
     unique_groups <- unique(col_groups_fun())
     checkboxGroupInput("tables", "Variable Groups", choices = unique_groups,
-                       selected = unique_groups[1])
+                       selected = unique_groups)
   })
 
   # build dropdown 1

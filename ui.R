@@ -14,7 +14,7 @@ shinyUI(fluidPage(
       fileInput("row_groups", "Upload Sample Types"),
       h3("Choose Variables"),
       p("Check the box below to incorporate sample labels in analysis.  For example, checking this box might split the scatterplot into male and female points."),
-      checkboxInput("split_groups", "Factor by Sample Type"),
+      checkboxInput("split_groups", "Factor by Sample Type", value = TRUE),
       uiOutput("cur_response"),
       uiOutput("dropdown_one"),
       uiOutput("dropdown_two")
